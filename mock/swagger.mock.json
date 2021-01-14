@@ -1,0 +1,406 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "ScheduleRearrangement",
+    "version": "1.0.0.0"
+  },
+  "host": "localhost:44373",
+  "basePath": "/v2/schedulerearrangement",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+
+	"/Clue/ListClueInfosForArchiveDownlo1ad": {
+		"post": {
+			"tags": [
+				"ClueArchive"
+			],
+			"summary": "测试in-body-array",
+			"consumes": [
+				"application/json",
+				"text/json",
+				"application/*+json"
+			],
+			"produces": [
+				"text/plain",
+				"application/json",
+				"text/json"
+			],
+			"parameters": [
+				{
+					"in": "body",
+					"name": "body",
+					"description": "",
+					"schema": {
+						"type": "array",
+						"items": {
+							"format": "int64",
+							"type": "integer"
+						}
+					}
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "Success",
+					"schema": {
+						"$ref": "#/definitions/BooleanIResponse"
+					}
+				}
+			}
+		}
+	},
+	"/Clue/CheckExistsByPhone": {
+		"post": {
+			"tags": [
+				"Clue"
+			],
+			"summary": "测试多个in-query",
+			"produces": [
+				"text/plain",
+				"application/json",
+				"text/json"
+			],
+			"parameters": [
+				{
+					"in": "query",
+					"name": "phone",
+					"description": "线索手机号",
+					"type": "string"
+				},
+				{
+					"in": "query",
+					"name": "excludeClueId",
+					"description": "",
+					"type": "integer",
+					"format": "int64"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "Success",
+					"schema": {
+						"$ref": "#/definitions/BooleanIResponse"
+					}
+				}
+			}
+		}
+	},
+	"/Clue/UpdateListFieldsState": {
+		"post": {
+			"tags": [
+				"Clue"
+			],
+			"summary": "测试in-body-chema",
+			"consumes": [
+				"application/json",
+				"text/json",
+				"application/*+json"
+			],
+			"produces": [
+				"text/plain",
+				"application/json",
+				"text/json"
+			],
+			"parameters": [
+				{
+					"in": "body",
+					"name": "body",
+					"description": "",
+					"schema": {
+						"$ref": "#/definitions/ClueUpdateListFieldsStateReq"
+					}
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "Success",
+					"schema": {
+						"$ref": "#/definitions/BooleanIResponse"
+					}
+				}
+			}
+		}
+	},
+	"/Clue/Import": {
+		"post": {
+			"tags": [
+				"Clue"
+			],
+			"summary": "测试导入线索222111，in-formData",
+			"consumes": [
+				"multipart/form-data"
+			],
+			"produces": [
+				"text/plain",
+				"application/json",
+				"text/json"
+			],
+			"parameters": [
+				{
+					"in": "formData",
+					"name": "file",
+					"description": "Select file",
+					"type": "file",
+					"format": "binary"
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "Success",
+					"schema": {
+						"$ref": "#/definitions/ClueImportResIResponseaa"
+					}
+				}
+			}
+		}
+	},
+    "/testEnum": {
+      "get": {
+        "tags": [
+          "Home"
+        ],
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "schooltype",
+            "schema": {
+              "$ref": "#/definitions/SchoolType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+	"ClueImportResIResponseaa": {
+		"type": "object",
+		"properties": {
+			"state": {
+				"format": "int32",
+				"type": "integer"
+			},
+			"msg": {
+				"type": "string"
+			},
+			"dd":{
+				"type":"number"
+			},
+			"msgCN": {
+				"type": "string"
+			},
+			"msgEN": {
+				"type": "string"
+			},
+			"data": {
+				"$ref": "#/definitions/ClueImportRes"
+			}
+		}
+	},
+	"ClueImportRes": {
+		"description": "线索导入返回模型",
+		"type": "object",
+		"properties": {
+			"cacheKey": {
+				"description": "导入任务CacheKey",
+				"type": "string"
+			}
+		}
+	},
+	"ClueUpdateListFieldsStateReq": {
+		"description": "更新线索列表列显示状态",
+		"type": "object",
+		"properties": {
+			"updateListFieldsState": {
+				"description": "",
+				"type": "array",
+				"items": {
+					"$ref": "#/definitions/ClueUpdateListFieldStateReq"
+				}
+			}
+		}
+	},
+	"ClueUpdateListFieldStateReq": {
+		"description": "",
+		"type": "object",
+		"properties": {
+			"id": {
+				"format": "int64",
+				"description": "字段Id",
+				"type": "integer"
+			},
+			"familyType": {
+				"$ref": "#/definitions/StuFamilyType"
+			}
+		}
+	},
+	"DailyCheckCheckableSchoolRes": {
+		"description": "可检查校区",
+		"type": "object",
+		"required": [
+			"id"
+			],
+		"properties": {
+			"id": {
+				"format": "int64",
+				"description": "校区编号",
+				"type": "integer"
+			},
+			"clueStatusIds": {
+				"description": "线索状态Id",
+				"type": "array",
+				"items": {
+					"format": "int64",
+					"type": "integer"
+				}
+			}
+		,
+			"name": {
+				"description": "校区中文名",
+				"type": "string"
+			},
+			"eName": {
+				"description": "校区英文名",
+				"type": "string"
+			}
+		}
+	},
+	"DailyCheckCheckableSchoolResIListResponse": {
+		"type": "object",
+		"properties": {
+			"state": {
+				"format": "int32",
+				"type": "integer"
+			},
+			"msg": {
+				"type": "string"
+			},
+			"msgCN": {
+				"type": "string"
+			},
+			"msgEN": {
+				"type": "string"
+			},
+			"data": {
+				"type": "array",
+				"items": {
+					"$ref": "#/definitions/DailyCheckCheckableSchoolRes"
+				}
+			}
+		}
+	},
+    "Types": {
+      "format": "int32",
+      "enum": [
+        1,
+        3
+      ],
+      "type": "integer",
+      "EnumDescription": {
+        "School": 1,
+        "Class": 3
+      }
+	},
+	"GradeType1": {
+		"format": "int32",
+		"enum": [
+		  1,
+		  2,
+		  3,
+		  4,
+		  5,
+		  6
+		],
+		"type": "integer",
+		"EnumDescription": {
+		  "Grade1": 1,
+		  "Grade2": 2,
+		  "Grade3": 3,
+		  "Grade4": 4,
+		  "Grade5": 5,
+		  "Grade6": 6
+
+		}
+	},
+	"StuFamilyType": {
+		"format": "int32",
+		"enum": [
+			1,
+			2,
+			3,
+			4,
+			5,
+			6,
+			7
+		],
+		"EnumDescription": {
+			"Father": 1,
+			"Mother": 2,
+			"PaternalGrandpa": 3,
+			"PaternalGrandma": 4,
+			"MaternalGrandpa": 5,
+			"MaternalGrandma":6,
+			"Others":7
+
+			},
+		"type": "integer"
+	},
+	"BooleanIResponse": {
+		"type": "object",
+		"properties": {
+			"state": {
+				"format": "int32",
+				"type": "integer"
+			},
+			"msg": {
+				"type": "string"
+			},
+			"msgCN": {
+				"type": "string"
+			},
+			"msgEN": {
+				"type": "string"
+			},
+			"data": {
+				"type": "boolean"
+			}
+		}
+	},
+    "SchoolType": {
+      "type": "object",
+      "properties": {
+        "enums": {
+          "$ref": "#/definitions/Types"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "SessionId": {
+      "type": "apiKey",
+      "name": "SessionId",
+      "in": "cookie"
+    }
+  },
+  "security": [
+    {
+      "SessionId": [ ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Home"
+    }
+  ]
+}

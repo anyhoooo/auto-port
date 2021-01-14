@@ -1,0 +1,229 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "ScheduleRearrangement",
+    "version": "1.0.0.0"
+  },
+  "host": "localhost:44373",
+  "basePath": "/v2/schedulerearrangement",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+
+		"/DailyCheck/GetCheckableSchool": {
+			"post": {
+				"tags": [
+					"Student"
+				],
+				"summary": "获取可检查校区",
+				"produces": [
+					"text/plain",
+					"application/json",
+					"text/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"schema": {
+							"$ref": "#/definitions/DailyCheckCheckableSchoolResIListResponse"
+						}
+					}
+				}
+			}
+		},
+
+	"/Student/lalal11": {
+		"post": {
+			"tags": [
+				"Student"
+			],
+			"summary": "测试in-body-array",
+			"consumes": [
+				"application/json",
+				"text/json",
+				"application/*+json"
+			],
+			"produces": [
+				"text/plain",
+				"application/json",
+				"text/json"
+			],
+			"parameters": [
+				{
+					"in": "body",
+					"name": "body",
+					"description": "",
+					"schema": {
+						"type": "array",
+						"items": {
+							"format": "int64",
+							"type": "integer"
+						}
+					}
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "Success",
+					"schema": {
+						"$ref": "#/definitions/BooleanIResponse"
+					}
+				}
+			}
+		}
+	},
+
+	"/Student/UpdateListFieldsState": {
+		"post": {
+			"tags": [
+				"Student"
+			],
+			"summary": "测试in-body-chema",
+			"consumes": [
+				"application/json",
+				"text/json",
+				"application/*+json"
+			],
+			"produces": [
+				"text/plain",
+				"application/json",
+				"text/json"
+			],
+			"parameters": [
+				{
+					"in": "query",
+					"name": "stu",
+					"description": "",
+					"schema": {
+						"$ref": "#/definitions/StuReq"
+					}
+				},{
+					"in": "query",
+					"name": "ty",
+					"description": "",
+					"schema": {
+						"$ref": "#/definitions/Types"
+					}
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "Success",
+					"schema": {
+						"$ref": "#/definitions/BooleanIResponse"
+					}
+				}
+			}
+		}
+	}
+  },
+  "definitions": {
+
+		"DailyCheckCheckableSchoolResIListResponse": {
+			"type": "object",
+			"properties": {
+				"state": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"msg": {
+					"type": "string"
+				},
+				"msgCN": {
+					"type": "string"
+				},
+				"msgEN": {
+					"type": "string"
+				},
+				"data": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/DailyCheckCheckableSchoolRes"
+					}
+				}
+			}
+		},
+
+			"DailyCheckCheckableSchoolRes": {
+				"description": "可检查校区",
+				"type": "object",
+				"properties": {
+					"id": {
+						"format": "int64",
+						"description": "校区编号",
+						"type": "integer"
+					},
+					"name": {
+						"description": "校区中文名",
+						"type": "string"
+					},
+					"eName": {
+						"description": "校区英文名",
+						"type": "string"
+					}
+				}
+			},
+
+	"StuReq": {
+		"description": "线索导入返回模型",
+		"type": "object",
+		"properties": {
+			"cacheKey": {
+				"description": "导入任务CacheKey",
+				"type": "string"
+			}
+		}
+	},
+	"Types": {
+		"format": "int32",
+		"enum": [
+		  1,
+		  2
+		],
+		"type": "integer",
+		"EnumDescription": {
+		  "School": 1,
+		  "Class": 2
+		}
+	  },
+	"BooleanIResponse": {
+		"type": "object",
+		"properties": {
+			"state": {
+				"format": "int32",
+				"type": "integer"
+			},
+			"msg": {
+				"type": "string"
+			},
+			"msgCN": {
+				"type": "string"
+			},
+			"msgEN": {
+				"type": "string"
+			},
+			"data": {
+				"type": "boolean"
+			}
+		}
+	}
+  },
+  "securityDefinitions": {
+    "SessionId": {
+      "type": "apiKey",
+      "name": "SessionId",
+      "in": "cookie"
+    }
+  },
+  "security": [
+    {
+      "SessionId": [ ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Home"
+    }
+  ]
+}
