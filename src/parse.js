@@ -115,22 +115,27 @@ function getTyscriptType(target, definitions) {
         !definitions.includes(type) && definitions.push(type);
         return `${type}`
     } else {
-        //数组类型
-        if (target.type === "array") {
-            if (target.items.$ref) {
-                let type = getModeleType(target.items.$ref);
-                !definitions.includes(type) && definitions.push(type)
-                return `${type}[]`
-            } else {
-                return `${transCSharpTypeToTyscriptType(target.items.type)}[]`
-            }
+        //联合类型
+        if (target.oneOf) {
+            return target.oneOf.map(i => transCSharpTypeToTyscriptType(i.type)).join('|')
         } else {
-            if (target.type === void 0) {
-                //当type为undefined的时候 存在其实是枚举类型的参数的情况
-                //TODO
-                return 'any'
+            //数组类型
+            if (target.type === "array") {
+                if (target.items.$ref) {
+                    let type = getModeleType(target.items.$ref);
+                    !definitions.includes(type) && definitions.push(type)
+                    return `${type}[]`
+                } else {
+                    return `${transCSharpTypeToTyscriptType(target.items.type)}[]`
+                }
+            } else {
+                if (target.type === void 0) {
+                    //当type为undefined的时候 存在其实是枚举类型的参数的情况
+                    //TODO
+                    return 'any'
+                }
+                return transCSharpTypeToTyscriptType(target.type)
             }
-            return transCSharpTypeToTyscriptType(target.type)
         }
     }
 

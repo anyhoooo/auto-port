@@ -172,7 +172,18 @@
 			"cacheKey": {
 				"description": "导入任务CacheKey",
 				"type": "string"
-			}
+            },
+             "key":{
+                        "description":"唯一标识",
+                        "oneOf":[
+                            {
+                                "type":"string"
+                            },
+                            {
+                                "type":"number"
+                            }
+                        ]
+                    }
 		}
 	},
 	"Types": {

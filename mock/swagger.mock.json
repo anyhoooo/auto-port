@@ -217,7 +217,7 @@
 				"type": "string"
 			}
 		}
-	},
+    },
 	"ClueUpdateListFieldsStateReq": {
 		"description": "更新线索列表列显示状态",
 		"type": "object",
