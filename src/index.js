@@ -60,7 +60,7 @@ function readLocalFile() {
 
 
 }
-readLocalFile()
+// readLocalFile()
 //正式用
 function readOnlineFile() {
     console.time(chalk.blueBright('耗时'))
@@ -91,7 +91,7 @@ function readOnlineFile() {
     })
 }
 
-// readOnlineFile()
+readOnlineFile()
 
 
 
