@@ -17,7 +17,7 @@ class GenerateFunction {
 		import net from '@/request'
 		import { NetConfig } from '@/client/IAxiosConfig'
 		${usedModel.map(i=>`import { ${i} } from '../Type/${i}'`).join('\r\n')}
-		${usedEnum.map(i=>`import { ${i} } from ${apiConfig.enumIsUnify ? '../../Enum/'+i : '../Enum/'+i}`).join('\r\n')}
+		${usedEnum.map(i=>`import { ${i} } from '${apiConfig.enumIsUnify ? '../../Enum/'+i : '../Enum/'+i}'`).join('\r\n')}
 
 		/**
 		 *	${api.summary}
@@ -137,7 +137,7 @@ export function modelFile(module, enumMap, modelMap, used, dirname) {
                 })
                 let template = `
 				${usedModel.map(i=>i===key?' ':`import { ${i} } from './${i}'`).join('\r\n')}
-				${usedEnum.map(i=>`import { ${i} } from ${apiConfig.enumIsUnify ? '../../Enum/'+i : '../Enum/'+i}`).join('\r\n')}
+				${usedEnum.map(i=>`import { ${i} } from '${apiConfig.enumIsUnify ? '../../Enum/'+i : '../Enum/'+i}'`).join('\r\n')}
 
 				/**  ${item.description} **/
 				export interface ${item.name}${item.extends ? ' extends ' + item.extends.join(',') : ''} {
