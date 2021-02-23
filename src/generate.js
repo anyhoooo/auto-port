@@ -114,7 +114,9 @@ export function enumFile(module, enumMap, used, dirname) {
             }
 
         })
-    correctionFile(dirname, enumList, module, 'enum')
+    if (!apiConfig.enumIsUnify) {
+        correctionFile(dirname, enumList, module, 'enum')
+    }
 }
 
 /** 生成后端模型文件 */
