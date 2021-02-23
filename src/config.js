@@ -4,7 +4,7 @@ class GenerateFunction {
 		import net from '@/request'
 		import { NetConfig } from '@/client/IAxiosConfig'
 		${usedModel.map(i=>`import { ${i} } from '../Type/${i}'`).join('\r\n')}
-		${usedEnum.map(i=>`import { ${i} } from '../Enum/${i}'`).join('\r\n')}
+		${usedEnum.map(i=>`import { ${i} } from '../../Enum/${i}'`).join('\r\n')}
 
 		/**
 		 *	${api.summary}
@@ -69,6 +69,7 @@ function getBaseConfig() {
     return {
         outputDir: '/src/client',
         enumSign: 'enum', //用什么标记改类型是枚举
+        enumIsUnify: true, //枚举是否统一存放
         baseUrl: 'localhost:3000',
         list: [
             '/v2/clue/swagger/v1/swagger.json',

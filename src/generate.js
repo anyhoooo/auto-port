@@ -3,6 +3,8 @@ import {
     getConfig
 } from './config'
 const apiConfig = getConfig()
+// const enumDir = apiConfig.enumIsUnify ? '../../Enum' : '../Enum'
+
 import {
     checkIsNeedUpdate,
     writeFile,
@@ -15,7 +17,7 @@ class GenerateFunction {
 		import net from '@/request'
 		import { NetConfig } from '@/client/IAxiosConfig'
 		${usedModel.map(i=>`import { ${i} } from '../Type/${i}'`).join('\r\n')}
-		${usedEnum.map(i=>`import { ${i} } from '../Enum/${i}'`).join('\r\n')}
+		${usedEnum.map(i=>`import { ${i} } from ${apiConfig.enumIsUnify ? '../../Enum/'+i : '../Enum/'+i}`).join('\r\n')}
 
 		/**
 		 *	${api.summary}
@@ -104,7 +106,7 @@ export function enumFile(module, enumMap, used, dirname) {
 				export enum ${item.name} {
 					${context}
 				}`
-                if (checkIsNeedUpdate('enum', module + '/' + key, item)) {
+                if (checkIsNeedUpdate('enum', apiConfig.enumIsUnify ? key : module + '/' + key, item)) {
                     writeFile(key, template, dirname)
                     // console.log(chalk.greenBright(dirname + '/' + key + ' 枚举已更新'))
                 }
@@ -135,7 +137,7 @@ export function modelFile(module, enumMap, modelMap, used, dirname) {
                 })
                 let template = `
 				${usedModel.map(i=>i===key?' ':`import { ${i} } from './${i}'`).join('\r\n')}
-				${usedEnum.map(i=>`import { ${i} } from '../Enum/${i}'`).join('\r\n')}
+				${usedEnum.map(i=>`import { ${i} } from ${apiConfig.enumIsUnify ? '../../Enum/'+i : '../Enum/'+i}`).join('\r\n')}
 
 				/**  ${item.description} **/
 				export interface ${item.name}${item.extends ? ' extends ' + item.extends.join(',') : ''} {

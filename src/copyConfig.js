@@ -4,7 +4,7 @@ class GenerateFunction {
 		import net from '@/request'
 		import { NetConfig } from '@/client/IAxiosConfig'
 		${usedModel.map(i=>`import { ${i} } from '../Type/${i}'`).join('\r\n')}
-		${usedEnum.map(i=>`import { ${i} } from '../Enum/${i}'`).join('\r\n')}
+		${usedEnum.map(i=>`import { ${i} } from '../../Enum/${i}'`).join('\r\n')}
 
 		/**
 		 *	${api.summary}
@@ -69,11 +69,12 @@ function getUserConfig() {
     return {
         outputDir: '/src/client',
         enumSign: 'enum', //用什么标记改类型是枚举
+        enumIsUnify: true, //枚举是否统一存放
         baseUrl: 'localhost:3000',
         list: [
             '/v2/clue/swagger/v1/swagger.json',
         ],
-        cache: true, //是否缓存，true会生成port.lock.json
+        cache: false, //是否缓存，true会生成port.lock.json
         version: 'V2', //现在后端给的是V2，BFF给的是V3
         prettierUrl: '/.prettierrc.yml',
         GenerateClass: GenerateFunction

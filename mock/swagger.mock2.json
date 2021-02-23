@@ -73,7 +73,49 @@
 			}
 		}
 	},
-
+	"/StudentA/UpdateListFieldsState": {
+		"post": {
+			"tags": [
+				"StudentA"
+			],
+			"summary": "测试in-body-chema",
+			"consumes": [
+				"application/json",
+				"text/json",
+				"application/*+json"
+			],
+			"produces": [
+				"text/plain",
+				"application/json",
+				"text/json"
+			],
+			"parameters": [
+				{
+					"in": "query",
+					"name": "stu",
+					"description": "",
+					"schema": {
+						"$ref": "#/definitions/StuReq"
+					}
+				},{
+					"in": "query",
+					"name": "ty",
+					"description": "",
+					"schema": {
+						"$ref": "#/definitions/Types"
+					}
+				}
+			],
+			"responses": {
+				"200": {
+					"description": "Success",
+					"schema": {
+						"$ref": "#/definitions/BooleanIResponse"
+					}
+				}
+			}
+		}
+	},
 	"/Student/UpdateListFieldsState": {
 		"post": {
 			"tags": [

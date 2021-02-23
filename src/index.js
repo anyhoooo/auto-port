@@ -127,8 +127,8 @@ function compile(swaggerjson, dirname = './') {
 
         //生成enum
         if (usedEnum.length) {
-            checkOutputDirExit(moduleDir + '/Enum')
-            enumFile(module, enumMap, usedEnum, moduleDir + '/Enum')
+            checkOutputDirExit((apiConfig.enumIsUnify ? dirname : moduleDir) + '/Enum')
+            enumFile(module, enumMap, usedEnum, (apiConfig.enumIsUnify ? dirname : moduleDir) + '/Enum')
         }
         //生成Request/Response Model
         if (usedModel.length) {
