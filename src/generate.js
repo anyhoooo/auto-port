@@ -22,7 +22,6 @@ class GenerateFunction {
 		/**
 		 *	${api.summary}
 		* @param {any} [req] 携带请求头
-		*TODO
 		* @param {NetConfig} [config] 请求配置
 		*/
 		export function ${api.name}(${this.getRequest(api.request)}) {
@@ -88,18 +87,20 @@ export function enumFile(module, enumMap, used, dirname) {
                 let context = ''
                 if (!item.enumname) {
                     if (typeof item.enum[0] === 'object') {
-                        Object.keys(item.enum[0]).forEach(key => {
-                            context += `${key} = ${item.enum[0][key]},`
+                        Object.keys(item.enum[0]).forEach(i => {
+                            context += `${i} = ${item.enum[0][i]},`
                         })
                     } else {
                         console.log(`让后端把${key}这个枚举加上描述`)
-                        item.enum.forEach((key, index) => {
+                        item.enum.forEach((i, index) => {
                             context += `Enum${index} = ${item.enum[index]},`
                         })
                     }
                 } else {
-                    Object.keys(item.enumname).forEach((key) => {
-                        context += `${key} = ${item.enumname[key]},`
+                    item.enumname.forEach((i) => {
+                        context += `
+                        //${i.comment}
+                        ${i.name} = ${i.value},`
                     })
                 }
                 let template = `

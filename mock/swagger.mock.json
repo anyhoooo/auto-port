@@ -304,13 +304,15 @@
       "format": "int32",
       "enum": [
         1,
+        2,
         3
       ],
       "type": "integer",
-      "EnumDescription": {
-        "School": 1,
-        "Class": 3
-      }
+      "fields":[
+        { "value":1, "name":"School", "comment":"学校" },
+        { "value":2, "name":"Class", "comment":"班级" },
+        { "value":3, "name":"Other", "comment":"其他" }
+      ]
 	},
 	"GradeType1": {
 		"format": "int32",
@@ -323,15 +325,14 @@
 		  6
 		],
 		"type": "integer",
-		"EnumDescription": {
-		  "Grade1": 1,
-		  "Grade2": 2,
-		  "Grade3": 3,
-		  "Grade4": 4,
-		  "Grade5": 5,
-		  "Grade6": 6
-
-		}
+        "fields":[
+            { "value":1, "name":"Grade1", "comment":"1" },
+            { "value":2, "name":"Grade2", "comment":"2" },
+            { "value":3, "name":"Grade3", "comment":"3" },
+            { "value":4, "name":"Grade4", "comment":"4" },
+            { "value":5, "name":"Grade5", "comment":"5" },
+            { "value":6, "name":"Grade6", "comment":"6" }
+          ]
 	},
 	"StuFamilyType": {
 		"format": "int32",
@@ -344,16 +345,15 @@
 			6,
 			7
 		],
-		"EnumDescription": {
-			"Father": 1,
-			"Mother": 2,
-			"PaternalGrandpa": 3,
-			"PaternalGrandma": 4,
-			"MaternalGrandpa": 5,
-			"MaternalGrandma":6,
-			"Others":7
-
-			},
+        "fields":[
+            { "value":1, "name":"Father", "comment":"1" },
+            { "value":2, "name":"Mother", "comment":"2" },
+            { "value":3, "name":"PaternalGrandpa", "comment":"3" },
+            { "value":4, "name":"PaternalGrandma", "comment":"4" },
+            { "value":5, "name":"MaternalGrandpa", "comment":"5" },
+            { "value":6, "name":"MaternalGrandma", "comment":"6" },
+            { "value":7, "name":"Others", "comment":"7" }
+          ],
 		"type": "integer"
 	},
 	"BooleanIResponse": {

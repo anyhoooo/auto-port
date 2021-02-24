@@ -36,8 +36,7 @@ function parseEnum(target, name) {
         name: name,
         description: target.description,
         enum: target.enum,
-        //TODO 让后端把每个字段的注释写出来，结构会改
-        enumname: target.EnumDescription,
+        enumname: target.fields,
     }
 }
 /** 处理后端模型，返回通用模型 */

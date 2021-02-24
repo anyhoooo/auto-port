@@ -34,7 +34,7 @@ import {
 function readLocalFile() {
     console.time(chalk.blueBright('耗时'))
     let count = 0
-    let filelist = ['../mock/swagger.mock3.json', '../mock/swagger.mock2.json']
+    let filelist = ['../mock/swagger.mock.json', '../mock/swagger.mock2.json']
     checkOutputDirExit(apiConfig.outputDir)
     filelist.forEach(url => {
         fs.readFile(path.resolve(__dirname, url), 'utf-8', function (err, data) {

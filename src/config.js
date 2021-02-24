@@ -9,7 +9,6 @@ class GenerateFunction {
 		/**
 		 *	${api.summary}
 		* @param {any} [req] 携带请求头
-		*TODO
 		* @param {NetConfig} [config] 请求配置
 		*/
 		export function ${api.name}(${this.getRequest(api.request)}) {

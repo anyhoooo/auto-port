@@ -232,13 +232,15 @@
 		"format": "int32",
 		"enum": [
 		  1,
-		  2
+		  2,
+          3
 		],
 		"type": "integer",
-		"EnumDescription": {
-		  "School": 1,
-		  "Class": 2
-		}
+        "fields":[
+            { "value":1, "name":"School", "comment":"学校" },
+            { "value":2, "name":"Class", "comment":"班级" },
+            { "value":3, "name":"Other", "comment":"其他" }
+          ]
 	  },
 	"BooleanIResponse": {
 		"type": "object",
