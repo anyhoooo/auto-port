@@ -183,10 +183,10 @@ export function apiFile(module, apis, enumMap, modelMap, dirname) {
             // console.log(chalk.greenBright(dirname + '/' + api.name + ' 接口已更新'))
             if (api.request) {
                 api.request.forEach(req=>{
-                    if(enumMap[req.type]){
+                    if(enumMap[req.type] && !requestUsedAllEnum.includes(req.type)){
                         requestUsedAllEnum.push(req.type) 
                     }else{
-                        if(modelMap[req.type]){
+                        if(modelMap[req.type]&& !requestUsedAllModel.includes(req.type)){
                             requestUsedAllModel.push(req.type) 
                         }
                     }
