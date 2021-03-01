@@ -24,6 +24,16 @@ class GenerateFunction {
 		}
 	`
     }
+    apiIndexFile(apis,moduleName,usedModel, usedEnum){
+        return `
+		/**
+		* @description Tag 接口汇总
+		*/
+		${apis.map(i=>`import { ${i} } from './${i}'`).join('\r\n')}
+
+		export default { ${apis.join(' , ')} }
+		`
+    }
     getRequest(request) {
         if (request.length) {
             return 'req: any,' + request.map(req => {

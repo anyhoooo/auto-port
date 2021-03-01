@@ -37,6 +37,16 @@ class GenerateFunction {
 		}
 	`
     }
+    apiIndexFile(apis){
+        `
+		/**
+		* @description Tag 接口汇总
+		*/
+		${apis.map(i=>`import { ${i} } from './${i}'`).join('\r\n')}
+
+		export default { ${apis.join(' , ')} }
+		`
+    }
     getRequest(request) {
         if (request.length) {
             return 'req: any,' + request.map(req => {
@@ -158,18 +168,11 @@ export function modelFile(module, enumMap, modelMap, used, dirname) {
 }
 /** 生成后端API文件 */
 export function apiFile(module, apis, enumMap, modelMap, dirname) {
-
-    let template = (apiList) =>
-        `
-		/**
-		* @description Tag 接口汇总
-		*/
-		${apiList.map(i=>`import { ${i} } from './${i}'`).join('\r\n')}
-
-		export default { ${apiList.join(' , ')} }
-		`
     const generateFun = apiConfig.GenerateClass ? new apiConfig.GenerateClass() : new GenerateFunction()
     let apiList = []
+    let requestUsedAllEnum = []
+    let requestUsedAllModel = []
+   
     apis.forEach(api => {
 
         if (checkIsNeedUpdate('api', module + '/' + api.name, api)) {
@@ -178,13 +181,26 @@ export function apiFile(module, apis, enumMap, modelMap, dirname) {
             findDefinitions([api], usedEnum, usedModel, enumMap, modelMap, false)
             writeFile(api.name, generateFun.apiTemplate(api, usedModel, usedEnum, module), dirname)
             // console.log(chalk.greenBright(dirname + '/' + api.name + ' 接口已更新'))
+            if (api.request) {
+                api.request.forEach(req=>{
+                    if(enumMap[req.type]){
+                        requestUsedAllEnum.push(req.type) 
+                    }else{
+                        if(modelMap[req.type]){
+                            requestUsedAllModel.push(req.type) 
+                        }
+                    }
+
+                })
+            }
         }
 
         apiList.push(api.name)
     })
 
     if (checkIsNeedUpdate('tag', module, apiList.join(' , '))) {
-        writeFile('index', template(apiList), dirname)
+
+        writeFile('index', generateFun.apiIndexFile(apis,module,requestUsedAllModel,requestUsedAllEnum), dirname)
         // console.log(chalk.yellowBright(module + '控制器已更新'))
     } else {
         // console.log(chalk.whiteBright(module + '控制器不需要更新'))
@@ -201,5 +217,5 @@ export function apiFile(module, apis, enumMap, modelMap, dirname) {
 module.exports = {
     enumFile,
     modelFile,
-    apiFile,
+    apiFile
 }
