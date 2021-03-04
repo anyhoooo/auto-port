@@ -1,406 +1,503 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "title": "ScheduleRearrangement",
-    "version": "1.0.0.0"
-  },
-  "host": "localhost:44373",
-  "basePath": "/v2/schedulerearrangement",
-  "schemes": [
-    "https"
-  ],
-  "paths": {
-
-	"/Clue/ListClueInfosForArchiveDownlo1ad": {
-		"post": {
-			"tags": [
-				"ClueArchive"
-			],
-			"summary": "测试in-body-array",
-			"consumes": [
-				"application/json",
-				"text/json",
-				"application/*+json"
-			],
-			"produces": [
-				"text/plain",
-				"application/json",
-				"text/json"
-			],
-			"parameters": [
-				{
-					"in": "body",
-					"name": "body",
-					"description": "",
-					"schema": {
-						"type": "array",
-						"items": {
-							"format": "int64",
-							"type": "integer"
-						}
-					}
-				}
-			],
-			"responses": {
-				"200": {
-					"description": "Success",
-					"schema": {
-						"$ref": "#/definitions/BooleanIResponse"
-					}
-				}
-			}
-		}
-	},
-	"/Clue/CheckExistsByPhone": {
-		"post": {
-			"tags": [
-				"Clue"
-			],
-			"summary": "测试多个in-query",
-			"produces": [
-				"text/plain",
-				"application/json",
-				"text/json"
-			],
-			"parameters": [
-				{
-					"in": "query",
-					"name": "phone",
-					"description": "线索手机号",
-					"type": "string"
-				},
-				{
-					"in": "query",
-					"name": "excludeClueId",
-					"description": "",
-					"type": "integer",
-					"format": "int64"
-				}
-			],
-			"responses": {
-				"200": {
-					"description": "Success",
-					"schema": {
-						"$ref": "#/definitions/BooleanIResponse"
-					}
-				}
-			}
-		}
-	},
-	"/Clue/UpdateListFieldsState": {
-		"post": {
-			"tags": [
-				"Clue"
-			],
-			"summary": "测试in-body-chema",
-			"consumes": [
-				"application/json",
-				"text/json",
-				"application/*+json"
-			],
-			"produces": [
-				"text/plain",
-				"application/json",
-				"text/json"
-			],
-			"parameters": [
-				{
-					"in": "body",
-					"name": "body",
-					"description": "",
-					"schema": {
-						"$ref": "#/definitions/ClueUpdateListFieldsStateReq"
-					}
-				}
-			],
-			"responses": {
-				"200": {
-					"description": "Success",
-					"schema": {
-						"$ref": "#/definitions/BooleanIResponse"
-					}
-				}
-			}
-		}
-	},
-	"/Clue/Import": {
-		"post": {
-			"tags": [
-				"Clue"
-			],
-			"summary": "测试导入线索222111，in-formData",
-			"consumes": [
-				"multipart/form-data"
-			],
-			"produces": [
-				"text/plain",
-				"application/json",
-				"text/json"
-			],
-			"parameters": [
-				{
-					"in": "formData",
-					"name": "file",
-					"description": "Select file",
-					"type": "file",
-					"format": "binary"
-				}
-			],
-			"responses": {
-				"200": {
-					"description": "Success",
-					"schema": {
-						"$ref": "#/definitions/ClueImportResIResponseaa"
-					}
-				}
-			}
-		}
-	},
-    "/testEnum": {
-      "get": {
-        "tags": [
-          "Home"
-        ],
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/*+json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "schooltype",
-            "schema": {
-              "$ref": "#/definitions/SchoolType"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          }
-        }
-      }
-    }
-  },
-  "definitions": {
-	"ClueImportResIResponseaa": {
-		"type": "object",
-		"properties": {
-			"state": {
-				"format": "int32",
-				"type": "integer"
-			},
-			"msg": {
-				"type": "string"
-			},
-			"dd":{
-				"type":"number"
-			},
-			"msgCN": {
-				"type": "string"
-			},
-			"msgEN": {
-				"type": "string"
-			},
-			"data": {
-				"$ref": "#/definitions/ClueImportRes"
-			}
-		}
-	},
-	"ClueImportRes": {
-		"description": "线索导入返回模型",
-		"type": "object",
-		"properties": {
-			"cacheKey": {
-				"description": "导入任务CacheKey",
-				"type": "string"
-			}
-		}
+    "openapi": "3.0.0",
+    "info": {
+        "title": "SIS",
+        "description": "TIS API 文档",
+        "version": "0.0.1",
+        "contact": {}
     },
-	"ClueUpdateListFieldsStateReq": {
-		"description": "更新线索列表列显示状态",
-		"type": "object",
-		"properties": {
-			"updateListFieldsState": {
-				"description": "",
-				"type": "array",
-				"items": {
-					"$ref": "#/definitions/ClueUpdateListFieldStateReq"
-				}
-			}
-		}
-	},
-	"ClueUpdateListFieldStateReq": {
-		"description": "",
-		"type": "object",
-		"properties": {
-			"id": {
-				"format": "int64",
-				"description": "字段Id",
-				"type": "integer"
-			},
-			"familyType": {
-				"$ref": "#/definitions/StuFamilyType"
-			}
-		}
-	},
-	"DailyCheckCheckableSchoolRes": {
-		"description": "可检查校区",
-		"type": "object",
-		"required": [
-			"id"
-			],
-		"properties": {
-			"id": {
-				"format": "int64",
-				"description": "校区编号",
-				"type": "integer"
-			},
-			"clueStatusIds": {
-				"description": "线索状态Id",
-				"type": "array",
-				"items": {
-					"format": "int64",
-					"type": "integer"
-				}
-			}
-		,
-			"name": {
-				"description": "校区中文名",
-				"type": "string"
-			},
-			"eName": {
-				"description": "校区英文名",
-				"type": "string"
-			}
-		}
-	},
-	"DailyCheckCheckableSchoolResIListResponse": {
-		"type": "object",
-		"properties": {
-			"state": {
-				"format": "int32",
-				"type": "integer"
-			},
-			"msg": {
-				"type": "string"
-			},
-			"msgCN": {
-				"type": "string"
-			},
-			"msgEN": {
-				"type": "string"
-			},
-			"data": {
-				"type": "array",
-				"items": {
-					"$ref": "#/definitions/DailyCheckCheckableSchoolRes"
-				}
-			}
-		}
-	},
-    "Types": {
-      "format": "int32",
-      "enum": [
-        1,
-        2,
-        3
-      ],
-      "type": "integer",
-      "fields":[
-        { "value":1, "name":"School", "comment":"学校" },
-        { "value":2, "name":"Class", "comment":"班级" },
-        { "value":3, "name":"Other", "comment":"其他" }
-      ]
-	},
-	"GradeType1": {
-		"format": "int32",
-		"enum": [
-		  1,
-		  2,
-		  3,
-		  4,
-		  5,
-		  6
-		],
-		"type": "integer",
-        "fields":[
-            { "value":1, "name":"Grade1", "comment":"1" },
-            { "value":2, "name":"Grade2", "comment":"2" },
-            { "value":3, "name":"Grade3", "comment":"3" },
-            { "value":4, "name":"Grade4", "comment":"4" },
-            { "value":5, "name":"Grade5", "comment":"5" },
-            { "value":6, "name":"Grade6", "comment":"6" }
-          ]
-	},
-	"StuFamilyType": {
-		"format": "int32",
-		"enum": [
-			1,
-			2,
-			3,
-			4,
-			5,
-			6,
-			7
-		],
-        "fields":[
-            { "value":1, "name":"Father", "comment":"1" },
-            { "value":2, "name":"Mother", "comment":"2" },
-            { "value":3, "name":"PaternalGrandpa", "comment":"3" },
-            { "value":4, "name":"PaternalGrandma", "comment":"4" },
-            { "value":5, "name":"MaternalGrandpa", "comment":"5" },
-            { "value":6, "name":"MaternalGrandma", "comment":"6" },
-            { "value":7, "name":"Others", "comment":"7" }
-          ],
-		"type": "integer"
-	},
-	"BooleanIResponse": {
-		"type": "object",
-		"properties": {
-			"state": {
-				"format": "int32",
-				"type": "integer"
-			},
-			"msg": {
-				"type": "string"
-			},
-			"msgCN": {
-				"type": "string"
-			},
-			"msgEN": {
-				"type": "string"
-			},
-			"data": {
-				"type": "boolean"
-			}
-		}
-	},
-    "SchoolType": {
-      "type": "object",
-      "properties": {
-        "enums": {
-          "$ref": "#/definitions/Types"
+    "tags": [
+        {
+            "name": "common",
+            "description": ""
+        },
+        {
+            "name": "health",
+            "description": ""
         }
-      }
+    ],
+    "servers": [],
+    "components": {
+        "securitySchemes": {
+            "SessionIdAuth": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "SessionId"
+            }
+        },
+        "schemas": {
+            "ApiResponseWrapper": {
+                "type": "object",
+                "properties": {
+                    "success": {
+                        "type": "boolean"
+                    },
+                    "errorCode": {
+                        "type": "string"
+                    },
+                    "errorMessage": {
+                        "type": "string"
+                    },
+                    "showType": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "success"
+                ]
+            },
+            "MenuListDTO": {
+                "type": "object",
+                "properties": {
+                    "key": {
+                        "description": "唯一标识",
+                        "oneOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "number"
+                            }
+                        ]
+                    },
+                    "path": {
+                        "type": "string",
+                        "description": "路径"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "显示标题"
+                    },
+                    "icon": {
+                        "type": "string",
+                        "description": "Icon"
+                    },
+                    "children": {
+                        "description": "子节点",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MenuListDTO"
+                        }
+                    }
+                },
+                "required": [
+                    "key",
+                    "title"
+                ]
+            },
+            "OssConfigDto": {
+                "type": "object",
+                "properties": {
+                    "signature": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "policy": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "host": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "OSSAccessKeyId": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "key": {
+                        "type": "string",
+                        "description": ""
+                    },
+                    "dirPath": {
+                        "type": "string",
+                        "description": ""
+                    }
+                },
+                "required": [
+                    "signature",
+                    "policy",
+                    "host",
+                    "OSSAccessKeyId",
+                    "key",
+                    "dirPath"
+                ]
+            },
+            "ClassTypes": {
+                "type": "string",
+                "enum": [
+                    {
+                        "Enum0": "0",
+                        "Enum1": "1",
+                        "Enum2": "2"
+                    }
+                ]
+            },
+            "DailyCheckAssessmentCategoryLevels": {
+                "type": "string",
+                "enum": [
+                    {
+                        "Enum0": "1",
+                        "Enum1": "2"
+                    }
+                ]
+            },
+            "DailyCheckAssessmentCategoryPatterns": {
+                "type": "string",
+                "enum": [
+                    {
+                        "Enum0": "1",
+                        "Enum1": "2"
+                    }
+                ]
+            },
+            "DailyCheckRankingModes": {
+                "type": "string",
+                "enum": [
+                    {
+                        "Enum0": "1",
+                        "Enum1": "2"
+                    }
+                ]
+            },
+            "DailyCheckScoreTypes": {
+                "type": "string",
+                "enum": [
+                    {
+                        "Enum0": "0",
+                        "Enum1": "1"
+                    }
+                ]
+            },
+            "GradeCodes": {
+                "type": "string",
+                "enum": [
+                    {
+                        "Enum0": "0",
+                        "Enum1": "1",
+                        "Enum2": "2",
+                        "Enum3": "3",
+                        "Enum4": "4",
+                        "Enum5": "5",
+                        "Enum6": "6",
+                        "Enum7": "7",
+                        "Enum8": "8",
+                        "Enum9": "9",
+                        "Enum10": "10",
+                        "Enum11": "11",
+                        "Enum12": "12",
+                        "Enum13": "13",
+                        "Enum14": "30",
+                        "Enum15": "31",
+                        "Enum16": "32",
+                        "Enum17": "33",
+                        "Enum18": "51",
+                        "Enum19": "52",
+                        "Enum20": "53",
+                        "Enum21": "54",
+                        "Enum22": "55",
+                        "Enum23": "-2",
+                        "Enum24": "-1"
+                    }
+                ]
+            },
+            "ScoreTypes": {
+                "type": "string",
+                "enum": [
+                    {
+                        "Enum0": "1",
+                        "Enum1": "2"
+                    }
+                ]
+            },
+            "StudySections": {
+                "type": "string",
+                "enum": [
+                    {
+                        "Enum0": "1",
+                        "Enum1": "2",
+                        "Enum2": "3",
+                        "Enum3": "4",
+                        "Enum4": "5"
+                    }
+                ]
+            },
+            "EnumListDto": {
+                "type": "object",
+                "properties": {
+                    "ClassTypes": {
+                        "$ref": "#/components/schemas/ClassTypes"
+                    },
+                    "DailyCheckAssessmentCategoryLevels": {
+                        "$ref": "#/components/schemas/DailyCheckAssessmentCategoryLevels"
+                    },
+                    "DailyCheckAssessmentCategoryPatterns": {
+                        "$ref": "#/components/schemas/DailyCheckAssessmentCategoryPatterns"
+                    },
+                    "DailyCheckRankingModes": {
+                        "$ref": "#/components/schemas/DailyCheckRankingModes"
+                    },
+                    "DailyCheckScoreTypes": {
+                        "$ref": "#/components/schemas/DailyCheckScoreTypes"
+                    },
+                    "GradeCodes": {
+                        "$ref": "#/components/schemas/GradeCodes"
+                    },
+                    "ScoreTypes": {
+                        "$ref": "#/components/schemas/ScoreTypes"
+                    },
+                    "StudySections": {
+                        "$ref": "#/components/schemas/StudySections"
+                    }
+                },
+                "required": [
+                    "ClassTypes",
+                    "DailyCheckAssessmentCategoryLevels",
+                    "DailyCheckAssessmentCategoryPatterns",
+                    "DailyCheckRankingModes",
+                    "DailyCheckScoreTypes",
+                    "GradeCodes",
+                    "ScoreTypes",
+                    "StudySections"
+                ]
+            }
+        }
+    },
+    "paths": {
+        "/health": {
+            "get": {
+                "operationId": "AppController_getHealth",
+                "summary": "健康检查",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiResponseWrapper"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "health"
+                ]
+            }
+        },
+        "/common/GetUserMenuData": {
+            "post": {
+                "operationId": "CommonController_GetUserMenuData",
+                "summary": "获取用户Menu数据",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "query",
+                        "description": "当前用户唯一id",
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "description": "数据",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/MenuListDTO"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Menu 列表",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiResponseWrapper"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/MenuListDTO"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "common"
+                ],
+                "security": [
+                    {
+                        "SessionIdAuth": []
+                    }
+                ]
+            }
+        },
+        "/common/SaveUserMenuData": {
+            "post": {
+                "operationId": "CommonController_SaveUserMenuData",
+                "summary": "保存用户Menu数据",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "query",
+                        "description": "当前用户唯一id",
+                        "schema": {}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/MenuListDTO"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Menu 列表",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiResponseWrapper"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/MenuListDTO"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "common"
+                ],
+                "security": [
+                    {
+                        "SessionIdAuth": []
+                    }
+                ]
+            }
+        },
+        "/common/GetOssAccessKey": {
+            "get": {
+                "operationId": "CommonController_GetOssAccessKey",
+                "summary": "获取OSS临时验证",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OSS 配置",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiResponseWrapper"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/OssConfigDto"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "common"
+                ],
+                "security": [
+                    {
+                        "SessionIdAuth": []
+                    }
+                ]
+            }
+        },
+        "/common/GetEnumList": {
+            "get": {
+                "operationId": "CommonController_GetEnumList",
+                "summary": "获取枚举列表",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiResponseWrapper"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/EnumListDto"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": [
+                    "common"
+                ],
+                "security": [
+                    {
+                        "SessionIdAuth": []
+                    }
+                ]
+            }
+        }
     }
-  },
-  "securityDefinitions": {
-    "SessionId": {
-      "type": "apiKey",
-      "name": "SessionId",
-      "in": "cookie"
-    }
-  },
-  "security": [
-    {
-      "SessionId": [ ]
-    }
-  ],
-  "tags": [
-    {
-      "name": "Home"
-    }
-  ]
 }

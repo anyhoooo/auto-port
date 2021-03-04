@@ -105,19 +105,41 @@ function getTyscriptType(target, definitions) {
     //引用其他类型
     if (target.$ref) {
         let type = getModeleType(target.$ref);
-        // let {
-        // 	name,
-        // 	isArray
-        // } = getReplaceNames(type);
-        // !definitions.includes(name) && definitions.push(name)
-        // return `${name}${isArray?'[]':''}`
         !definitions.includes(type) && definitions.push(type);
         return `${type}`
     } else {
-        //联合类型
+       
         if (target.oneOf) {
+             //普通联合类型  number | string
             return target.oneOf.map(i => transCSharpTypeToTyscriptType(i.type)).join('|')
-        } else {
+        } else if(target.allOf){
+            //正常response包裹类型
+            let data= target.allOf[1].properties.data
+            //数组类型
+            if (data.type === "array") {
+                if (data.items.$ref) {
+                    let type = getModeleType(data.items.$ref);
+                    console.log(type);
+                    !definitions.includes(type) && definitions.push(type)
+                    return `${type}[]`
+                } else {
+                    return `${transCSharpTypeToTyscriptType(data.items.type)}[]`
+                }
+            } else {
+                if (data.$ref) {
+                    let type = getModeleType(data.$ref);
+                    !definitions.includes(type) && definitions.push(type);
+                    return `${type}`
+                }else{
+                    if (data.type === void 0) {
+                        //当type为undefined的时候 存在其实是枚举类型的参数的情况
+                        //TODO
+                        return 'any'
+                    }
+                    return transCSharpTypeToTyscriptType(data.type)
+                }
+            }
+        }else {
             //数组类型
             if (target.type === "array") {
                 if (target.items.$ref) {
@@ -158,7 +180,14 @@ export function paths(paths) {
 
 
         }
-
+        if (data.requestBody) {
+            info.request.push({
+                name:'body',
+                desc: data.requestBody.description || '描述缺失',
+                type: getTyscriptType(data.requestBody.content['application/json'].schema, definitions),
+                in: 'body'
+            })
+        }
         info.responses = parseResponses(data.responses, definitions)
         info.definitions = definitions
         let tag
