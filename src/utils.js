@@ -17,7 +17,7 @@ export function transCSharpTypeToTyscriptType(origintype) {
         number: 'number',
         array: '[]',
         object: 'object',
-        int64: 'number',
+        int64: 'string',
         int32: 'number',
         date: 'string',
     }
