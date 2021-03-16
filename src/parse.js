@@ -136,7 +136,7 @@ function getTyscriptType(target, definitions) {
                         //TODO
                         return 'any'
                     }
-                    return transCSharpTypeToTyscriptType(data.type)
+                    return transCSharpTypeToTyscriptType(data.type,data.format)
                 }
             }
         }else {
@@ -155,7 +155,7 @@ function getTyscriptType(target, definitions) {
                     //TODO
                     return 'any'
                 }
-                return transCSharpTypeToTyscriptType(target.type)
+                return transCSharpTypeToTyscriptType(target.type,target.format)
             }
         }
     }
