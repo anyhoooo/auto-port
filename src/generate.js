@@ -179,7 +179,7 @@ export function apiFile(module, apis, enumMap, modelMap, dirname, basePath) {
             let usedModel = []
             let usedEnum = []
             findDefinitions([api], usedEnum, usedModel, enumMap, modelMap, false)
-            writeFile(api.name, generateFun.apiTemplate(api, usedModel, usedEnum, module), dirname, basePath)
+            writeFile(api.name, generateFun.apiTemplate(api, usedModel, usedEnum, module, basePath), dirname)
             // console.log(chalk.greenBright(dirname + '/' + api.name + ' 接口已更新'))
             if (api.request) {
                 api.request.forEach(req => {
