@@ -1,5 +1,5 @@
 class GenerateFunction {
-    apiTemplate(api, usedModel, usedEnum, moduleName) {
+    apiTemplate(api, usedModel, usedEnum, moduleName, basePath) {
         return `
 		import net from '@/request'
 		import { NetConfig } from '@/client/IAxiosConfig'
@@ -24,7 +24,7 @@ class GenerateFunction {
 		}
 	`
     }
-    apiIndexFile(apis,moduleName,usedModel, usedEnum){
+    apiIndexFile(apis, moduleName, usedModel, usedEnum) {
         return `
 		/**
 		* @description Tag 接口汇总

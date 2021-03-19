@@ -12,7 +12,7 @@ import {
     findDefinitions
 } from './utils'
 class GenerateFunction {
-    apiTemplate(api, usedModel, usedEnum, moduleName) {
+    apiTemplate(api, usedModel, usedEnum, moduleName, basePath) {
         return `
 		import net from '@/request'
 		import { NetConfig } from '@/client/IAxiosConfig'
@@ -37,7 +37,7 @@ class GenerateFunction {
 		}
 	`
     }
-    apiIndexFile(apis){
+    apiIndexFile(apis) {
         `
 		/**
 		* @description Tag 接口汇总
@@ -167,27 +167,27 @@ export function modelFile(module, enumMap, modelMap, used, dirname) {
     correctionFile(dirname, modelList, module, 'type')
 }
 /** 生成后端API文件 */
-export function apiFile(module, apis, enumMap, modelMap, dirname) {
+export function apiFile(module, apis, enumMap, modelMap, dirname, basePath) {
     const generateFun = apiConfig.GenerateClass ? new apiConfig.GenerateClass() : new GenerateFunction()
     let apiList = []
     let requestUsedAllEnum = []
     let requestUsedAllModel = []
-   
+
     apis.forEach(api => {
 
         if (checkIsNeedUpdate('api', module + '/' + api.name, api)) {
             let usedModel = []
             let usedEnum = []
             findDefinitions([api], usedEnum, usedModel, enumMap, modelMap, false)
-            writeFile(api.name, generateFun.apiTemplate(api, usedModel, usedEnum, module), dirname)
+            writeFile(api.name, generateFun.apiTemplate(api, usedModel, usedEnum, module), dirname, basePath)
             // console.log(chalk.greenBright(dirname + '/' + api.name + ' 接口已更新'))
             if (api.request) {
-                api.request.forEach(req=>{
-                    if(enumMap[req.type] && !requestUsedAllEnum.includes(req.type)){
-                        requestUsedAllEnum.push(req.type) 
-                    }else{
-                        if(modelMap[req.type]&& !requestUsedAllModel.includes(req.type)){
-                            requestUsedAllModel.push(req.type) 
+                api.request.forEach(req => {
+                    if (enumMap[req.type] && !requestUsedAllEnum.includes(req.type)) {
+                        requestUsedAllEnum.push(req.type)
+                    } else {
+                        if (modelMap[req.type] && !requestUsedAllModel.includes(req.type)) {
+                            requestUsedAllModel.push(req.type)
                         }
                     }
 
@@ -200,7 +200,7 @@ export function apiFile(module, apis, enumMap, modelMap, dirname) {
 
     if (checkIsNeedUpdate('tag', module, apiList.join(' , '))) {
 
-        writeFile('index', generateFun.apiIndexFile(apis,module,requestUsedAllModel,requestUsedAllEnum), dirname)
+        writeFile('index', generateFun.apiIndexFile(apis, module, requestUsedAllModel, requestUsedAllEnum), dirname)
         // console.log(chalk.yellowBright(module + '控制器已更新'))
     } else {
         // console.log(chalk.whiteBright(module + '控制器不需要更新'))
