@@ -85,10 +85,14 @@ class GenerateFunction {
         }
         return req
     }
+    aliasModelName(name) {
+        return name
+    }
 }
 
 /** 生成枚举文件 */
 export function enumFile(module, enumMap, used, dirname) {
+    const generateFun = apiConfig.GenerateClass ? new apiConfig.GenerateClass() : new GenerateFunction()
     let enumList = []
     Object.keys(enumMap)
         .forEach(key => {
@@ -114,14 +118,14 @@ export function enumFile(module, enumMap, used, dirname) {
                     })
                 }
                 let template = `
-				export enum ${item.name} {
+				export enum ${generateFun.aliasModelName(item.name)} {
 					${context}
 				}`
                 if (checkIsNeedUpdate('enum', apiConfig.enumIsUnify ? key : module + '/' + key, item)) {
-                    writeFile(key, template, dirname)
+                    writeFile(generateFun.aliasModelName(key), template, dirname)
                     // console.log(chalk.greenBright(dirname + '/' + key + ' 枚举已更新'))
                 }
-                enumList.push(key)
+                enumList.push(generateFun.aliasModelName(key))
             }
 
         })
@@ -132,6 +136,7 @@ export function enumFile(module, enumMap, used, dirname) {
 
 /** 生成后端模型文件 */
 export function modelFile(module, enumMap, modelMap, used, dirname) {
+    const generateFun = apiConfig.GenerateClass ? new apiConfig.GenerateClass() : new GenerateFunction()
     let modelList = []
     Object.keys(modelMap)
         .forEach(key => {
@@ -145,22 +150,22 @@ export function modelFile(module, enumMap, modelMap, used, dirname) {
                 item.property.forEach((key, i) => {
                     context += `
 					/**  ${key.description} **/
-					${key.name}${key.required ? '' : '?'}: ${key.type}
+					${key.name}${key.required ? '' : '?'}: ${generateFun.aliasModelName(key.type)}
 					`
                 })
                 let template = `
-				${usedModel.map(i=>i===key?' ':`import { ${i} } from './${i}'`).join('\r\n')}
-				${usedEnum.map(i=>`import { ${i} } from '${apiConfig.enumIsUnify ? '../../Enum/'+i : '../Enum/'+i}'`).join('\r\n')}
+				${usedModel.map(i=>i===key?' ':`import { ${generateFun.aliasModelName(i)} } from './${generateFun.aliasModelName(i)}'`).join('\r\n')}
+				${usedEnum.map(i=>`import { ${generateFun.aliasModelName(i)} } from '${apiConfig.enumIsUnify ? '../../Enum/'+generateFun.aliasModelName(i) : '../Enum/'+generateFun.aliasModelName(i)}'`).join('\r\n')}
 
 				/**  ${item.description} **/
-				export interface ${item.name}${item.extends ? ' extends ' + item.extends.join(',') : ''} {
+				export interface ${generateFun.aliasModelName(item.name)}${item.extends ? ' extends ' + item.extends.join(',') : ''} {
 					${context}
 				}`
-                if (checkIsNeedUpdate('type', module + '/' + key, item)) {
-                    writeFile(key, template, dirname)
+                if (checkIsNeedUpdate('type', module + '/' + generateFun.aliasModelName(key), item)) {
+                    writeFile(generateFun.aliasModelName(key), template, dirname)
                     // console.log(chalk.greenBright(dirname + '/' + key + ' 模型已更新'))
                 }
-                modelList.push(key)
+                modelList.push(generateFun.aliasModelName(key))
             }
         })
 
@@ -179,7 +184,12 @@ export function apiFile(module, apis, enumMap, modelMap, dirname, swaggerjson) {
             let usedModel = []
             let usedEnum = []
             findDefinitions([api], usedEnum, usedModel, enumMap, modelMap, false)
-            writeFile(api.name, generateFun.apiTemplate(api, usedModel, usedEnum, module, swaggerjson), dirname)
+            api.request.map(i => {
+                i.type = generateFun.aliasModelName(i.type)
+                return i
+            })
+            api.responses = generateFun.aliasModelName(api.responses)
+            writeFile(api.name, generateFun.apiTemplate(api, usedModel.map(i => generateFun.aliasModelName(i)), usedEnum.map(i => generateFun.aliasModelName(i)), module, swaggerjson), dirname)
             // console.log(chalk.greenBright(dirname + '/' + api.name + ' 接口已更新'))
             if (api.request) {
                 api.request.forEach(req => {

@@ -72,6 +72,9 @@ class GenerateFunction {
         }
         return req
     }
+    aliasModelName(name) {
+        return name
+    }
 }
 
 function getBaseConfig() {

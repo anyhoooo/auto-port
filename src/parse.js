@@ -108,13 +108,13 @@ function getTyscriptType(target, definitions) {
         !definitions.includes(type) && definitions.push(type);
         return `${type}`
     } else {
-       
+
         if (target.oneOf) {
-             //普通联合类型  number | string
+            //普通联合类型  number | string
             return target.oneOf.map(i => transCSharpTypeToTyscriptType(i.type)).join('|')
-        } else if(target.allOf){
+        } else if (target.allOf) {
             //正常response包裹类型
-            let data= target.allOf[1].properties.data
+            let data = target.allOf[1].properties.data
             //数组类型
             if (data.type === "array") {
                 if (data.items.$ref) {
@@ -130,16 +130,16 @@ function getTyscriptType(target, definitions) {
                     let type = getModeleType(data.$ref);
                     !definitions.includes(type) && definitions.push(type);
                     return `${type}`
-                }else{
+                } else {
                     if (data.type === void 0) {
                         //当type为undefined的时候 存在其实是枚举类型的参数的情况
                         //TODO
                         return 'any'
                     }
-                    return transCSharpTypeToTyscriptType(data.type,data.format)
+                    return transCSharpTypeToTyscriptType(data.type, data.format)
                 }
             }
-        }else {
+        } else {
             //数组类型
             if (target.type === "array") {
                 if (target.items.$ref) {
@@ -155,7 +155,7 @@ function getTyscriptType(target, definitions) {
                     //TODO
                     return 'any'
                 }
-                return transCSharpTypeToTyscriptType(target.type,target.format)
+                return transCSharpTypeToTyscriptType(target.type, target.format)
             }
         }
     }
@@ -165,8 +165,9 @@ function getTyscriptType(target, definitions) {
 export function paths(paths) {
     const pathMap = {}
     Object.keys(paths).forEach(api => {
+        let name = api.split('/')
         const info = {
-            name: api.split('/').pop(),
+            name: apiConfig.version === 'V2' ? name[name.length - 2] + name[name.length - 1] : name[name.length - 1],
             method: paths[api].get ? 'get' : 'post',
             url: api,
             request: [],
@@ -182,7 +183,7 @@ export function paths(paths) {
         }
         if (data.requestBody) {
             info.request.push({
-                name:'body',
+                name: 'body',
                 desc: data.requestBody.description || '描述缺失',
                 type: getTyscriptType(data.requestBody.content['application/json'].schema, definitions),
                 in: 'body'
