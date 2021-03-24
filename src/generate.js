@@ -167,7 +167,7 @@ export function modelFile(module, enumMap, modelMap, used, dirname) {
     correctionFile(dirname, modelList, module, 'type')
 }
 /** 生成后端API文件 */
-export function apiFile(module, apis, enumMap, modelMap, dirname, basePath) {
+export function apiFile(module, apis, enumMap, modelMap, dirname, swaggerjson) {
     const generateFun = apiConfig.GenerateClass ? new apiConfig.GenerateClass() : new GenerateFunction()
     let apiList = []
     let requestUsedAllEnum = []
@@ -179,7 +179,7 @@ export function apiFile(module, apis, enumMap, modelMap, dirname, basePath) {
             let usedModel = []
             let usedEnum = []
             findDefinitions([api], usedEnum, usedModel, enumMap, modelMap, false)
-            writeFile(api.name, generateFun.apiTemplate(api, usedModel, usedEnum, module, basePath), dirname)
+            writeFile(api.name, generateFun.apiTemplate(api, usedModel, usedEnum, module, swaggerjson), dirname)
             // console.log(chalk.greenBright(dirname + '/' + api.name + ' 接口已更新'))
             if (api.request) {
                 api.request.forEach(req => {

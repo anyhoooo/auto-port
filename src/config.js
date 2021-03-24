@@ -1,5 +1,5 @@
 class GenerateFunction {
-    apiTemplate(api, usedModel, usedEnum, moduleName, basePath) {
+    apiTemplate(api, usedModel, usedEnum, moduleName, swaggerjson) {
         return `
 		import net from '@/request'
 		import { NetConfig } from '@/client/IAxiosConfig'

@@ -136,7 +136,7 @@ function compile(swaggerjson, dirname = './') {
             modelFile(module, enumMap, modelMap, usedModel, moduleDir + '/Type')
         }
         //生成API
-        apiFile(module, moduleApis, enumMap, modelMap, moduleDir + '/apis', swaggerjson.basePath)
+        apiFile(module, moduleApis, enumMap, modelMap, moduleDir + '/apis', swaggerjson)
     })
 
 
