@@ -77,6 +77,7 @@ function readOnlineFile() {
                 }
             }
         }).catch(err => {
+            console.log('错误信息:', err);
             if (err.response.status === 502) {
                 console.log(chalk.redBright(url + '地址请求失败'))
             } else {

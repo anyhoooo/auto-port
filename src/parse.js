@@ -119,7 +119,6 @@ function getTyscriptType(target, definitions) {
             if (data.type === "array") {
                 if (data.items.$ref) {
                     let type = getModeleType(data.items.$ref);
-                    console.log(type);
                     !definitions.includes(type) && definitions.push(type)
                     return `${type}[]`
                 } else {
