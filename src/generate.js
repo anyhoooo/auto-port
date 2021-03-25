@@ -185,7 +185,9 @@ export function apiFile(module, apis, enumMap, modelMap, dirname, swaggerjson) {
             let usedEnum = []
             findDefinitions([api], usedEnum, usedModel, enumMap, modelMap, false)
             api.request.map(i => {
+                i.oldType = i.type
                 i.type = generateFun.aliasModelName(i.type)
+
                 return i
             })
             api.responses = generateFun.aliasModelName(api.responses)
@@ -196,7 +198,7 @@ export function apiFile(module, apis, enumMap, modelMap, dirname, swaggerjson) {
                     if (enumMap[req.type] && !requestUsedAllEnum.includes(req.type)) {
                         requestUsedAllEnum.push(req.type)
                     } else {
-                        if (modelMap[req.type] && !requestUsedAllModel.includes(req.type)) {
+                        if (modelMap[req.oldType] && !requestUsedAllModel.includes(req.type)) {
                             requestUsedAllModel.push(req.type)
                         }
                     }
