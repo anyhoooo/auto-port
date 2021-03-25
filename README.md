@@ -42,14 +42,14 @@ npx port
 具体配置项介绍如下：
 
 | 参数          | 值类型   | 描述                                            | 默认值           |
-| ------------- | -------- | ----------------------------------------------- | ---------------- | --- |
+| ------------- | -------- | ----------------------------------------------- | ---------------- |
 | outputDir     | string   | 生成代码的存放路径                              | /src/client      |
 | enumSign      | string   | 用什么标记改类型是枚举                          | enum             |
 | enumIsUnify   | boolean  | 枚举是否统一存放                                | true             |
 | baseUrl       | string   | Swagger 请求地址                                | localhost:3000   |
 | list          | string[] | Swagger 请求地址。最终的 url 是 baseUrl+list[i] | []               |
 | cache         | boolean  | 是否缓存，true 会生成 port.lock.json            | false            |
-| version       | string   | Swagger 版本 V2                                 | V3               | V2  |
+| version       | string   | Swagger 版本 V2/V3                              | V2               |
 | prettierUrl   | string   | 生成文件格式化规则                              | /.prettierrc.yml |
 | GenerateClass | class    | 自定义 Code 生成器                              | 脚本生成         |
 
