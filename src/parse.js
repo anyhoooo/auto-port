@@ -192,7 +192,7 @@ export function paths(paths) {
     Object.keys(paths).forEach(api => {
         let name = api.split('/')
         const info = {
-            name: apiConfig.version === 'V2' ? name[name.length - 2] + name[name.length - 1] : name[name.length - 1],
+            name: name[name.length - 2] + name[name.length - 1],
             method: paths[api].get ? 'get' : 'post',
             url: api,
             request: [],
