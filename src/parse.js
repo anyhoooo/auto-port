@@ -122,10 +122,36 @@ function getTyscriptType(target, definitions) {
                     !definitions.includes(type) && definitions.push(type)
                     return `${type}[]`
                 } else {
-                    return `${transCSharpTypeToTyscriptType(data.items.type)}[]`
+                    return `${transCSharpTypeToTyscriptType(data.items.type,data.items.format)}[]`
                 }
             } else {
-                if (data.$ref) {
+                if (data.allOf) {
+                    let type = getModeleType(data.allOf[0].$ref);
+                    !definitions.includes(type) && definitions.push(type)
+                    let innerData = data.allOf[1].properties[Object.keys(data.allOf[1].properties)[0]]
+                    if (innerData.type === "array") {
+                        if (innerData.items.$ref) {
+                            let innerType = getModeleType(innerData.items.$ref);
+                            !definitions.includes(innerType) && definitions.push(innerType)
+                            return `${type}<${innerType}[]>`
+                        } else {
+                            return `${type}<${transCSharpTypeToTyscriptType(innerData.items.type,innerData.items.format)}[]>`
+                        }
+                    } else {
+                        if (innerData.$ref) {
+                            let innerType = getModeleType(innerData.$ref);
+                            !definitions.includes(innerType) && definitions.push(innerType);
+                            return `${type}<${innerType}>`
+                        } else {
+                            if (innerData.type === void 0) {
+                                //当type为undefined的时候 存在其实是枚举类型的参数的情况
+                                //TODO
+                                return 'any'
+                            }
+                            return transCSharpTypeToTyscriptType(innerData.type, innerData.format)
+                        }
+                    }
+                } else if (data.$ref) {
                     let type = getModeleType(data.$ref);
                     !definitions.includes(type) && definitions.push(type);
                     return `${type}`
@@ -146,7 +172,7 @@ function getTyscriptType(target, definitions) {
                     !definitions.includes(type) && definitions.push(type)
                     return `${type}[]`
                 } else {
-                    return `${transCSharpTypeToTyscriptType(target.items.type)}[]`
+                    return `${transCSharpTypeToTyscriptType(target.items.type,target.items.format)}[]`
                 }
             } else {
                 if (target.type === void 0) {

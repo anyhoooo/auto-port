@@ -147,7 +147,11 @@ export function modelFile(module, enumMap, modelMap, used, dirname) {
                 findDefinitions([item], usedEnum, usedModel, enumMap, modelMap, false)
 
                 let context = ''
+                let isHaveT = false
                 item.property.forEach((key, i) => {
+                    if (key.type === 'T') {
+                        isHaveT = true
+                    }
                     context += `
 					/**  ${key.description} **/
 					${key.name}${key.required ? '' : '?'}: ${generateFun.aliasModelName(key.type)}
@@ -158,7 +162,7 @@ export function modelFile(module, enumMap, modelMap, used, dirname) {
 				${usedEnum.map(i=>`import { ${generateFun.aliasModelName(i)} } from '${apiConfig.enumIsUnify ? '../../Enum/'+generateFun.aliasModelName(i) : '../Enum/'+generateFun.aliasModelName(i)}'`).join('\r\n')}
 
 				/**  ${item.description} **/
-				export interface ${generateFun.aliasModelName(item.name)}${item.extends ? ' extends ' + item.extends.join(',') : ''} {
+				export interface ${generateFun.aliasModelName(item.name)}${item.extends ? ' extends ' + item.extends.join(',') : ''} ${isHaveT?'<T>':''} {
 					${context}
 				}`
                 if (checkIsNeedUpdate('type', module + '/' + generateFun.aliasModelName(key), item)) {

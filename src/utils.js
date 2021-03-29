@@ -8,7 +8,7 @@ import {
 const apiConfig = getConfig()
 
 /** C#的类型转为 TS的类型 */
-export function transCSharpTypeToTyscriptType(origintype,format) {
+export function transCSharpTypeToTyscriptType(origintype, format) {
 
     const typeEnmu = {
         integer: 'number',
@@ -20,10 +20,11 @@ export function transCSharpTypeToTyscriptType(origintype,format) {
         int64: 'string',
         int32: 'number',
         date: 'string',
+        't': 'T'
     }
-    if(format){
+    if (format) {
         return typeEnmu[format.toLocaleLowerCase()]
-    }else{
+    } else {
         return typeEnmu[origintype.toLocaleLowerCase()]
     }
 }
