@@ -102,6 +102,11 @@ function getTyscriptType(target, definitions) {
     if (target === '') {
         return `null`
     }
+    if(target.allOf && target.allOf.length == 1){
+        let type = getModeleType(target.allOf[0].$ref);
+        !definitions.includes(type) && definitions.push(type);
+        return `${type}`
+    }
     //引用其他类型
     if (target.$ref) {
         let type = getModeleType(target.$ref);
