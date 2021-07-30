@@ -126,7 +126,17 @@ function getTyscriptType(target, definitions) {
                     let type = getModeleType(data.items.$ref);
                     !definitions.includes(type) && definitions.push(type)
                     return `${type}[]`
-                } else {
+                } else if(data.items.oneOf){
+                    return data.items.oneOf.map(i =>{
+                        if(i.$ref){
+                            let type = getModeleType(i.$ref);
+                            !definitions.includes(type) && definitions.push(type)
+                            return `${type}[]`
+                        }else{
+                            return transCSharpTypeToTyscriptType(i.type)
+                        }
+                    }).join('|')
+                }else {
                     return `${transCSharpTypeToTyscriptType(data.items.type,data.items.format)}[]`
                 }
             } else {
@@ -176,7 +186,17 @@ function getTyscriptType(target, definitions) {
                     let type = getModeleType(target.items.$ref);
                     !definitions.includes(type) && definitions.push(type)
                     return `${type}[]`
-                } else {
+                } else if(target.items.oneOf){
+                    return target.items.oneOf.map(i =>{
+                        if(i.$ref){
+                            let type = getModeleType(i.$ref);
+                            !definitions.includes(type) && definitions.push(type)
+                            return `${type}[]`
+                        }else{
+                            return transCSharpTypeToTyscriptType(i.type)
+                        }
+                    }).join('|')
+                }else {
                     return `${transCSharpTypeToTyscriptType(target.items.type,target.items.format)}[]`
                 }
             } else {

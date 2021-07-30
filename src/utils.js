@@ -20,6 +20,7 @@ export function transCSharpTypeToTyscriptType(origintype, format) {
         int64: 'string',
         int32: 'number',
         date: 'string',
+        'date-time':'string',
         't': 'T'
     }
     if (format) {

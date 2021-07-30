@@ -65,31 +65,62 @@ function readLocalFile() {
 function readOnlineFile() {
     console.time(chalk.blueBright('耗时'))
     let count = 0
-    checkOutputDirExit(apiConfig.outputDir)
-    apiConfig.list.forEach(url => {
-        axios.get(apiConfig.baseUrl + url).then(r => {
-            if (r.status === 200) {
-                console.log(chalk.greenBright(url + '地址请求成功'))
-                compile(r.data, apiConfig.outputDir)
+    if(apiConfig.groupList){
+        apiConfig.groupList.forEach(item=>{
+            checkOutputDirExit(item.outputDir)
+            item.list.forEach(url => {
+                axios.get(apiConfig.baseUrl + url).then(r => {
+                    if (r.status === 200) {
+                        console.log(chalk.greenBright(url + '地址请求成功'))
+                        compile(r.data, item.outputDir)
+                        if (item.list.length === ++count) {
+                            console.log(chalk.greenBright('API文档生成成功🚀🚀🚀'))
+                            console.timeEnd(chalk.blueBright('耗时'))
+                        }
+                    }
+                }).catch(err => {
+                    console.log('错误信息:', err);
+                    if (err.response.status === 502) {
+                        console.log(chalk.redBright(url + '地址请求失败'))
+                    } else {
+                        console.log(err)
+                    }
+                    if (item.list.length === ++count) {
+                        console.log(chalk.greenBright('API文档生成成功🚀🚀🚀'))
+                        console.timeEnd(chalk.blueBright('耗时'))
+                    }
+                })
+        
+            })
+        })
+    }else{
+        checkOutputDirExit(apiConfig.outputDir)
+        apiConfig.list.forEach(url => {
+            axios.get(apiConfig.baseUrl + url).then(r => {
+                if (r.status === 200) {
+                    console.log(chalk.greenBright(url + '地址请求成功'))
+                    compile(r.data, apiConfig.outputDir)
+                    if (apiConfig.list.length === ++count) {
+                        console.log(chalk.greenBright('API文档生成成功🚀🚀🚀'))
+                        console.timeEnd(chalk.blueBright('耗时'))
+                    }
+                }
+            }).catch(err => {
+                console.log('错误信息:', err);
+                if (err.response.status === 502) {
+                    console.log(chalk.redBright(url + '地址请求失败'))
+                } else {
+                    console.log(err)
+                }
                 if (apiConfig.list.length === ++count) {
                     console.log(chalk.greenBright('API文档生成成功🚀🚀🚀'))
                     console.timeEnd(chalk.blueBright('耗时'))
                 }
-            }
-        }).catch(err => {
-            console.log('错误信息:', err);
-            if (err.response.status === 502) {
-                console.log(chalk.redBright(url + '地址请求失败'))
-            } else {
-                console.log(err)
-            }
-            if (apiConfig.list.length === ++count) {
-                console.log(chalk.greenBright('API文档生成成功🚀🚀🚀'))
-                console.timeEnd(chalk.blueBright('耗时'))
-            }
+            })
+    
         })
+    }
 
-    })
 }
 
 readOnlineFile()
