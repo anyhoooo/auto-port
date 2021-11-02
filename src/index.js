@@ -34,7 +34,7 @@ import {
 function readLocalFile() {
     console.time(chalk.blueBright('耗时'))
     let count = 0
-    let filelist = ['../mock/swagger.mock.json', '../mock/swagger.mock2.json']
+    let filelist = ['../mock/swagger.mock4.json']
     checkOutputDirExit(apiConfig.outputDir)
     filelist.forEach(url => {
         fs.readFile(path.resolve(__dirname, url), 'utf-8', function (err, data) {
@@ -60,13 +60,14 @@ function readLocalFile() {
 
 
 }
+// debugger
 // readLocalFile()
 //正式用
 function readOnlineFile() {
     console.time(chalk.blueBright('耗时'))
     let count = 0
-    if(apiConfig.groupList){
-        apiConfig.groupList.forEach(item=>{
+    if (apiConfig.groupList) {
+        apiConfig.groupList.forEach(item => {
             checkOutputDirExit(item.outputDir)
             item.list.forEach(url => {
                 axios.get(apiConfig.baseUrl + url).then(r => {
@@ -90,10 +91,10 @@ function readOnlineFile() {
                         console.timeEnd(chalk.blueBright('耗时'))
                     }
                 })
-        
+
             })
         })
-    }else{
+    } else {
         checkOutputDirExit(apiConfig.outputDir)
         apiConfig.list.forEach(url => {
             axios.get(apiConfig.baseUrl + url).then(r => {
@@ -117,7 +118,7 @@ function readOnlineFile() {
                     console.timeEnd(chalk.blueBright('耗时'))
                 }
             })
-    
+
         })
     }
 
@@ -136,7 +137,39 @@ function checkFileStructure(dirname) {
 function compile(swaggerjson, dirname = './') {
 
 
-
+    if(typeof swaggerjson === 'string'){
+        let source = swaggerjson.replace(/\n/gm, ' ');
+        // 下面校验给定字符串是否为一个合法的json
+        try {
+            // 再看看是不是jsonp的格式
+            let reg = /^([\w\.]+)\(\s*([\s\S]*)\s*\)$/igm;
+            let matches = reg.exec(source);
+            if (matches != null) {
+                funcName = matches[1];
+                source = matches[2];
+            }
+            // 这里可能会throw exception
+            swaggerjson = JSON.parse(source);
+        } catch (ex) {
+            // new Function的方式，能自动给key补全双引号，但是不支持bigint，所以是下下策，放在try-catch里搞
+            try {
+                swaggerjson = new Function("return " + source)();
+            } catch (exx) {
+                try {
+                    // 再给你一次机会，是不是下面这种情况：  "{\"ret\":\"0\", \"msg\":\"ok\"}"
+                    swaggerjson = new Function("return '" + source + "'")();
+                    if (typeof swaggerjson === 'string') {
+                        // 最后给你一次机会，是个字符串，老夫给你再转一次
+                        swaggerjson = new Function("return " + jsonObj)();
+                    }
+                } catch (exxx) {
+                    console.log('====================================');
+                    console.log(exxx);
+                    console.log('====================================');
+                }
+            }
+        }
+    }
     //转换API
     const pathMap = paths(swaggerjson.paths)
 
