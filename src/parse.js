@@ -217,7 +217,7 @@ export function paths(paths) {
     Object.keys(paths).forEach(api => {
         let name = api.split('/')
         const info = {
-            name: name[name.length - 2] + name[name.length - 1],
+            name:new apiConfig.GenerateClass().nameRule?new apiConfig.GenerateClass().nameRule(api): name[name.length - 2] + name[name.length - 1],
             method: paths[api].get ? 'get' : 'post',
             url: api,
             request: [],
@@ -243,7 +243,7 @@ export function paths(paths) {
         info.definitions = definitions
         let tag
         if (data.tags) {
-            tag = getTagName(data.tags)
+            tag = new apiConfig.GenerateClass().getTagName? new apiConfig.GenerateClass().getTagName(api): getTagName(data.tags)
         } else {
             console.log('该Api没有标识Tag，默认放到Other里')
             tag = 'Other'
@@ -255,6 +255,7 @@ export function paths(paths) {
     })
     return pathMap
 }
+const conflictName=['function','void','number','string','int']
 /** 处理接口入参 */
 function parseParameters(parameters, definitions) {
     const argument = []
@@ -262,13 +263,24 @@ function parseParameters(parameters, definitions) {
     parameters.map(param => {
 
         if (param.in === 'query' || param.in === 'body') {
-            argument.push({
-                //todo 临时处理参数名称是Page.Pagesize
-                name: param.name.includes('.') ? param.name.split('.')[1] : param.name,
-                desc: param.description || '描述缺失',
-                type: getTyscriptType(param.schema || param, definitions),
-                in: param.in
-            })
+            if(conflictName.includes(param.name)){
+                argument.push({
+                    name: param.name,
+                    conflictName:`_${param.name}`,
+                    desc: param.description || '描述缺失',
+                    type: getTyscriptType(param.schema || param, definitions),
+                    in: param.in
+                })
+            }else{
+                argument.push({
+                    //todo 临时处理参数名称是Page.Pagesize
+                    name: param.name.includes('.') ? param.name.split('.')[1] : param.name,
+                    desc: param.description || '描述缺失',
+                    type: getTyscriptType(param.schema || param, definitions),
+                    in: param.in
+                })
+            }
+
         }
         if (param.in === 'formData') {
             argument.push({
