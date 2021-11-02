@@ -20,8 +20,9 @@ export function transCSharpTypeToTyscriptType(origintype, format) {
         int64: 'string',
         int32: 'number',
         date: 'string',
-        'date-time':'string',
-        't': 'T'
+        'date-time': 'string',
+        't': 'T',
+        'double': 'number'
     }
     if (format) {
         return typeEnmu[format.toLocaleLowerCase()]
@@ -32,8 +33,8 @@ export function transCSharpTypeToTyscriptType(origintype, format) {
 
 /** 获取引用类型名称 */
 export function getModeleType(str) {
-    // return str.replace('#/definitions/', '')
-    return str.match(/(\w+)$/g)[0]
+    return str.replace('#/definitions/', '')
+    // return str.match(/(\w+)$/g)[0]
 }
 
 /** 写入文件 */
