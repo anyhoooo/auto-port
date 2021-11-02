@@ -1,0 +1,91 @@
+{
+"paths": {
+    "/app/appConfig": {
+        "get": {
+            "tags": [
+                "temp"
+            ],
+            "summary": "应用功能服务查询接口",
+            "description": "增加字段区域",
+            "operationId": "getAppConfig",
+            "produces": [
+                "application/json"
+            ],
+            "parameters": [
+                {
+                    "name": "aid",
+                    "in": "query",
+                    "description": "应用id",
+                    "required": true,
+                    "type": "integer",
+                    "format": "int64",
+                    "x-example": 1
+                }
+            ],
+            "responses": {
+                "200": {
+                    "description": "OK",
+                    "schema": {
+                        "$ref": "#/definitions/PackEntity«AccessModel»"
+                    }
+                }
+            },
+            "deprecated": false
+        }
+    }
+},
+"definitions":{
+    
+    "AccessModel": {
+        "type": "object",
+        "properties": {
+            "aids": {
+                "type": "array",
+                "items": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            },
+            "hasAllAppPermissions": {
+                "type": "boolean"
+            },
+            "resourceCodes": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        "title": "AccessModel"
+    },
+    
+    "PackEntity«AccessModel»": {
+        "type": "object",
+        "properties": {
+            "errmsg": {
+                "type": "string",
+                "example": "参数错误",
+                "description": "错误信息"
+            },
+            "msg": {
+                "description": "返回数据",
+                "$ref": "#/definitions/AccessModel"
+            },
+            "requestId": {
+                "type": "string",
+                "example": "e8089815e8ff9bca2a",
+                "description": "请求Id"
+            },
+            "res": {
+                "type": "integer",
+                "format": "int32",
+                "example": 200,
+                "description": "返回码"
+            }
+        },
+        "title": "PackEntity«AccessModel»"
+    }
+
+
+}
+}
