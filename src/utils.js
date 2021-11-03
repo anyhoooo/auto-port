@@ -72,7 +72,7 @@ const prettierFiles = file => {
             fs.writeFileSync(file, output, 'utf8')
         }
     } catch (e) {
-        console.log('格式化出错了')
+        console.log('格式化出错了',file)
     }
 }
 
@@ -81,8 +81,8 @@ export function correctionFile(dirname, list, module, type) {
     let dataFiles = list.map(i => i + '.ts').sort((a, b) => a.localeCompare(b))
     let currentFiles = fs.readdirSync(path.resolve(process.cwd() + dirname)).sort((a, b) => a.localeCompare(b));
     if (dataFiles.join() !== currentFiles.join()) {
-        if (dataFiles.length > currentFiles.length) {
-            console.log('看看是不是哪里出错了~~~~~~')
+        if (Array.from(new Set(dataFiles)).length > Array.from(new Set(currentFiles)).length) {
+            console.log('看看是不是哪里出错了~~~~~~',dirname)
         } else {
             currentFiles.forEach(fileName => {
                 if (!dataFiles.includes(fileName)) {

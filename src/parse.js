@@ -7,7 +7,6 @@ import {
     transCSharpTypeToTyscriptType,
     getTagName
 } from './utils'
-const md5 = require('md5');
 
 
 /** 处理Swagger中的Definitions字段。包含DTO和enum */
@@ -103,15 +102,6 @@ function getTyscriptType(target, definitions,name) {
     if (target === '') {
         return `null`
     }
-    // if(target.enum){
-    //     if(process.enumCache[md5(target.enum.join())]){
-    //         process.enumCache[md5(target.enum.join())] = ++process.enumCache[md5(target.enum.join())]
-    //         return 'string'
-    //     }else{
-    //         process.enumCache[md5(target.enum.join())] = 1
-    //         return  'string'
-    //     }
-    // }
     if(target.allOf && target.allOf.length == 1){
         let type = getModeleType(target.allOf[0].$ref);
         !definitions.includes(type) && definitions.push(type);
