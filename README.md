@@ -51,8 +51,8 @@ npx port
 | cache         | boolean  | 是否缓存，true 会生成 port.lock.json            | false            |
 | version       | string   | Swagger 版本 V2/V3                              | V2               |
 | prettierUrl   | string   | 生成文件格式化规则                              | /.prettierrc.yml |
+| excludeModule | string[] | 不要哪些模块生成（1.2.1）                         | 空          |
 | GenerateClass | class    | 自定义 Code 生成器                              | 脚本生成         |
-
 ## `GenerateClass` 配置项
 
 具体配置项介绍如下：
