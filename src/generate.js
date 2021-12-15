@@ -154,7 +154,7 @@ export function modelFile(module, enumMap, modelMap, used, dirname) {
                     }
                     context += `
 					/**  ${key.description} **/
-					${key.name}${key.required ? '' : '?'}: ${key.enum ? `'${key.enum.join("'|'")}'`: generateFun.aliasModelName(key.type)}
+					${key.name}${apiConfig.isIgnoreRequired ?'':(key.required ? '' : '?')}: ${key.enum ? `'${key.enum.join("'|'")}'`: generateFun.aliasModelName(key.type)}
 					`
                 })
                 let template = `

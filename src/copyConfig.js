@@ -82,6 +82,7 @@ function getUserConfig() {
         outputDir: '/src/client',
         enumSign: 'enum', //用什么标记改类型是枚举
         enumIsUnify: true, //枚举是否统一存放
+        isIgnoreRequired: false, //是否忽略required标记
         baseUrl: 'localhost:3000',
         list: [
             '/v2/clue/swagger/v1/swagger.json',

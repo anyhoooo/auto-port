@@ -41,18 +41,20 @@ npx port
 
 具体配置项介绍如下：
 
-| 参数          | 值类型   | 描述                                            | 默认值           |
-| ------------- | -------- | ----------------------------------------------- | ---------------- |
-| outputDir     | string   | 生成代码的存放路径                              | /src/client      |
-| enumSign      | string   | 用什么标记改类型是枚举                          | enum             |
-| enumIsUnify   | boolean  | 枚举是否统一存放                                | true             |
-| baseUrl       | string   | Swagger 请求地址                                | localhost:3000   |
-| list          | string[] | Swagger 请求地址。最终的 url 是 baseUrl+list[i] | []               |
-| cache         | boolean  | 是否缓存，true 会生成 port.lock.json            | false            |
-| version       | string   | Swagger 版本 V2/V3                              | V2               |
-| prettierUrl   | string   | 生成文件格式化规则                              | /.prettierrc.yml |
-| excludeModule | string[] | 不要哪些模块生成（1.2.1）                         | 空          |
-| GenerateClass | class    | 自定义 Code 生成器                              | 脚本生成         |
+| 参数             | 值类型   | 描述                                            | 默认值           |
+| ---------------- | -------- | ----------------------------------------------- | ---------------- |
+| outputDir        | string   | 生成代码的存放路径                              | /src/client      |
+| enumSign         | string   | 用什么标记改类型是枚举                          | enum             |
+| enumIsUnify      | boolean  | 枚举是否统一存放                                | true             |
+| isIgnoreRequired | boolean  | 是否忽略 required 标记                          | false            |
+| baseUrl          | string   | Swagger 请求地址                                | localhost:3000   |
+| list             | string[] | Swagger 请求地址。最终的 url 是 baseUrl+list[i] | []               |
+| cache            | boolean  | 是否缓存，true 会生成 port.lock.json            | false            |
+| version          | string   | Swagger 版本 V2/V3                              | V2               |
+| prettierUrl      | string   | 生成文件格式化规则                              | /.prettierrc.yml |
+| excludeModule    | string[] | 不要哪些模块生成（1.2.1）                       | 空               |
+| GenerateClass    | class    | 自定义 Code 生成器                              | 脚本生成         |
+
 ## `GenerateClass` 配置项
 
 具体配置项介绍如下：
@@ -106,16 +108,16 @@ npx port
 
 #### getTagName
 
-描述：自定义获取分组形式（1.2.0以上）
+描述：自定义获取分组形式（1.2.0 以上）
 
-| 参数 | 描述                    |
-| ---- | ----------------------- |
-| url  | 接口path的url |
+| 参数 | 描述             |
+| ---- | ---------------- |
+| url  | 接口 path 的 url |
 
 #### nameRule
 
-描述：自定义api生成的名称（1.2.0以上），默认url.split('/')最后两个拼接
+描述：自定义 api 生成的名称（1.2.0 以上），默认 url.split('/')最后两个拼接
 
-| 参数 | 描述                    |
-| ---- | ----------------------- |
-| url  | 接口path的url |
+| 参数 | 描述             |
+| ---- | ---------------- |
+| url  | 接口 path 的 url |
