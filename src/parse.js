@@ -64,7 +64,7 @@ function parseProperties(target, definitions) {
         propetys.push({
             ...targetPro,
             name: pro,
-            type: getTyscriptType(targetPro, definitions,pro),
+            type: getTyscriptType(targetPro, definitions, pro),
             description: targetPro.description || '注释缺失',
             required: requiredArr.includes(pro) ? true : false,
         })
@@ -98,11 +98,11 @@ function getReplaceNames(type) {
     }
 }
 /** 获取TS格式的类型声明 */
-function getTyscriptType(target, definitions,name) {
+function getTyscriptType(target, definitions, name) {
     if (target === '') {
         return `null`
     }
-    if(target.allOf && target.allOf.length == 1){
+    if (target.allOf && target.allOf.length == 1) {
         let type = getModeleType(target.allOf[0].$ref);
         !definitions.includes(type) && definitions.push(type);
         return `${type}`
@@ -126,17 +126,17 @@ function getTyscriptType(target, definitions,name) {
                     let type = getModeleType(data.items.$ref);
                     !definitions.includes(type) && definitions.push(type)
                     return `${type}[]`
-                } else if(data.items.oneOf){
-                    return data.items.oneOf.map(i =>{
-                        if(i.$ref){
+                } else if (data.items.oneOf) {
+                    return data.items.oneOf.map(i => {
+                        if (i.$ref) {
                             let type = getModeleType(i.$ref);
                             !definitions.includes(type) && definitions.push(type)
                             return `${type}[]`
-                        }else{
+                        } else {
                             return transCSharpTypeToTyscriptType(i.type)
                         }
                     }).join('|')
-                }else {
+                } else {
                     return `${transCSharpTypeToTyscriptType(data.items.type,data.items.format)}[]`
                 }
             } else {
@@ -186,17 +186,17 @@ function getTyscriptType(target, definitions,name) {
                     let type = getModeleType(target.items.$ref);
                     !definitions.includes(type) && definitions.push(type)
                     return `${type}[]`
-                } else if(target.items.oneOf){
-                    return target.items.oneOf.map(i =>{
-                        if(i.$ref){
+                } else if (target.items.oneOf) {
+                    return target.items.oneOf.map(i => {
+                        if (i.$ref) {
                             let type = getModeleType(i.$ref);
                             !definitions.includes(type) && definitions.push(type)
                             return `${type}[]`
-                        }else{
+                        } else {
                             return transCSharpTypeToTyscriptType(i.type)
                         }
                     }).join('|')
-                }else {
+                } else {
                     return `${transCSharpTypeToTyscriptType(target.items.type,target.items.format)}[]`
                 }
             } else {
@@ -216,9 +216,10 @@ export function paths(paths) {
     const pathMap = {}
     Object.keys(paths).forEach(api => {
         let name = api.split('/')
+        let method = Object.keys(paths[api])[0]
         const info = {
-            name:new apiConfig.GenerateClass().nameRule?new apiConfig.GenerateClass().nameRule(api): name[name.length - 2] + name[name.length - 1],
-            method: paths[api].get ? 'get' : 'post',
+            name: new apiConfig.GenerateClass().nameRule ? new apiConfig.GenerateClass().nameRule(api) : name[name.length - 2] + name[name.length - 1],
+            method: method,
             url: api,
             request: [],
             summary: '',
@@ -235,7 +236,7 @@ export function paths(paths) {
             info.request.push({
                 name: 'body',
                 desc: data.requestBody.description || '描述缺失',
-                type: getTyscriptType(data.requestBody.content['application/json'].schema, definitions,''),
+                type: getTyscriptType(data.requestBody.content['application/json'].schema, definitions, ''),
                 in: 'body'
             })
         }
@@ -243,23 +244,23 @@ export function paths(paths) {
         info.definitions = definitions
         let tag
         if (data.tags) {
-            tag = new apiConfig.GenerateClass().getTagName? new apiConfig.GenerateClass().getTagName(api): getTagName(data.tags)
+            tag = new apiConfig.GenerateClass().getTagName ? new apiConfig.GenerateClass().getTagName(api) : getTagName(data.tags)
         } else {
             console.log('该Api没有标识Tag，默认放到Other里')
             tag = 'Other'
         }
 
-        if(!(apiConfig.excludeModule && apiConfig.excludeModule.includes(tag))){
+        if (!(apiConfig.excludeModule && apiConfig.excludeModule.includes(tag))) {
             if (!pathMap[tag]) {
                 pathMap[tag] = []
             }
             pathMap[tag].push(info)
         }
-       
+
     })
     return pathMap
 }
-const conflictName=['function','void','number','string','int']
+const conflictName = ['function', 'void', 'number', 'string', 'int']
 /** 处理接口入参 */
 function parseParameters(parameters, definitions) {
     const argument = []
@@ -267,22 +268,22 @@ function parseParameters(parameters, definitions) {
     parameters.map(param => {
 
         if (param.in === 'query' || param.in === 'body') {
-            if(conflictName.includes(param.name)){
+            if (conflictName.includes(param.name)) {
                 argument.push({
                     ...param,
                     name: param.name,
-                    conflictName:`_${param.name}`,
+                    conflictName: `_${param.name}`,
                     desc: param.description || '描述缺失',
-                    type: getTyscriptType(param.schema || param, definitions,param.name),
+                    type: getTyscriptType(param.schema || param, definitions, param.name),
                     in: param.in
                 })
-            }else{
+            } else {
                 argument.push({
                     ...param,
                     //todo 临时处理参数名称是Page.Pagesize
                     name: param.name.includes('.') ? param.name.split('.')[1] : param.name,
                     desc: param.description || '描述缺失',
-                    type: getTyscriptType(param.schema || param, definitions,param.name),
+                    type: getTyscriptType(param.schema || param, definitions, param.name),
                     in: param.in
                 })
             }
@@ -305,9 +306,9 @@ function parseParameters(parameters, definitions) {
 function parseResponses(responses, definitions) {
     const res = responses['200']
     if (apiConfig.version === 'V2') {
-        return getTyscriptType(res.schema || '', definitions,'')
+        return getTyscriptType(res.schema || '', definitions, '')
     } else {
-        return getTyscriptType(res.content && res.content[Object.keys(res.content)[0]].schema || '', definitions,'');
+        return getTyscriptType(res.content && res.content[Object.keys(res.content)[0]].schema || '', definitions, '');
     }
 
 }
