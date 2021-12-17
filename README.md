@@ -36,6 +36,7 @@ npx port
 ```
 
 ![](https://cdn.nlark.com/yuque/0/2021/png/105422/1610433456229-32ee6ed0-fbd6-4561-a328-4651cdec89f0.png)
+![](https://cdn.nlark.com/yuque/0/2021/gif/105422/1639739262290-cddba956-a064-470e-b92a-11919befdc7c.gif)
 
 ## `auto-port-config.js` 配置项
 
