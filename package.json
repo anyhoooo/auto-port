@@ -1,6 +1,6 @@
 {
   "name": "auto-port",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "基于Swagger文档自动生成的接口文档",
   "main": "index.js",
   "scripts": {
